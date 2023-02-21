@@ -1,5 +1,6 @@
 
 import os
+import logging
 
 class DeleteProcessor:
 
@@ -23,6 +24,12 @@ class DeleteProcessor:
             for file in files:
                 file_path = os.path.join(root, file)
                 list_files.append(file_path)
+
+        if len(list_files) == 0:
+            logging.info(f'no files found in {directory}')
+            return []
+        
+        logging.info(f'found {len(list_files)} files in {directory}')
         return list_files
     
         
@@ -75,6 +82,9 @@ class DeleteProcessor:
                 and not path.endswith(tuple(self.get_subtitles_format())) \
                 and not path.endswith(tuple(self.get_images_format())):
                     filtered_paths.append(path)
+
+        if len(filtered_paths) == 0:
+            logging.info('no files to delete')
         return filtered_paths
     
 
@@ -87,7 +97,9 @@ class DeleteProcessor:
         for path in file_paths:
             if os.path.isfile(path):
                 os.remove(path)
-                print(f'deleted {path}')
+                logging.info(f'deleted file: {path}')
+            else:
+                logging.info(f'file not found: {path}')
         
     
     def process(self):
