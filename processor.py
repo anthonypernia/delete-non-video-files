@@ -40,6 +40,27 @@ class DeleteProcessor:
         ]
         return list_video_formats
     
+    def get_subtitles_format(self) -> list:
+
+        list_subtitles_formats = [
+            'srt',
+            'sub',
+            'vtt',
+        ]
+        return list_subtitles_formats
+    
+    def get_images_format(self) -> list:
+        list_images_formats = [
+            'jpg',
+            'jpeg',
+            'png',
+            'gif',
+            'bmp',
+            'tiff',
+            'svg',
+        ]
+        return list_images_formats
+    
     def filter_paths(self, file_paths: list, words_to_exclude: list):
         """return list of paths without paths that contain any of the strings in words_to_exclude
 
@@ -50,7 +71,9 @@ class DeleteProcessor:
         filtered_paths = []
         for path in file_paths:
             if not any(exclude in path for exclude in words_to_exclude):
-                if not path.endswith(tuple(self.get_video_format())):
+                if not path.endswith(tuple(self.get_video_format())) \
+                and not path.endswith(tuple(self.get_subtitles_format())) \
+                and not path.endswith(tuple(self.get_images_format())):
                     filtered_paths.append(path)
         return filtered_paths
     
